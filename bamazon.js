@@ -22,7 +22,7 @@ function runInquirer(){
         .prompt([{
             name: "buy",
             type: "input",
-            message: ["What is the ID of the product you would like to buy?"]       
+            message: ["What is the ID of the product you would like to buy? (OR PRESS CTRL-C TO QUIT)"]       
         },
         {
             name: "quantity",
@@ -33,15 +33,11 @@ function runInquirer(){
             numBuy = parseInt(answer.buy);
             quantityNumber = parseInt(answer.quantity);
             if (numBuy < 1 || numBuy > 10){
-                console.log("=====================================");
-                console.log("You entered an invalid ID!  Try again");
-                console.log("=====================================");
+                invalidId();
                 return runInquirerAgain();
             };
             if (quantityNumber < 1){
-                console.log("=====================================");
-                console.log("You entered an invalid quantity!  Try again");
-                console.log("====================================="); 
+                invalidQty();
                 return runInquirerAgain();
             };
             validateStock(answer.buy, answer.quantity);
@@ -61,9 +57,7 @@ function runInquirerAgain(){
                 displayProduct();
             }
             else if (yorn.yorn === 'N'){
-                console.log("=====================================");
-                console.log("goodbye!");
-                console.log("=====================================");
+                goodBye();
                 connection.end();
             }
         });  
@@ -119,20 +113,22 @@ function displayProduct(){
             runInquirer();
         }
     )
-    
 }
 
-function createProduct(){
-    var query = connection.query(
-        'insert into products set ?',
-        {
-            product_name: 'shucker',
-            department_name: 'kitchen',
-            price: 1.99,
-            stock_qty: 1200
-        },
-        function(err, res){   
-            console.log(res.affectedRows + ' product inserted');
-        }
-    )
+function invalidQty(){
+    console.log("=====================================");
+    console.log("You entered an invalid quantity!  Try again");
+    console.log("====================================="); 
+}
+
+function invalidId(){
+    console.log("=====================================");
+    console.log("You entered an invalid ID!  Try again");
+    console.log("=====================================");
+}
+
+function goodBye(){
+    console.log("=====================================");
+    console.log("goodbye!");
+    console.log("=====================================");
 }

@@ -25,7 +25,7 @@ function runInquirer(){
             type: "list",
             message: ["What boring job routine would you like to perform?"],
             choices: ["View Products for sale","View Low Inventory", "Add to Inventory",
-                        "Add New Product"]     
+                        "Add New Product", "I changed my mind, please exit"]     
         })
         .then(function(answer){
             switch (answer.manager) {
@@ -41,9 +41,121 @@ function runInquirer(){
                 case 'Add New Product':
                     runInquirerAddProd();
                     break;
+                case 'I changed my mind, please exit':
+                    goodBye();
+                    connection.end();
+                    break;
                 default:  console.log("Something didn't work!");       
             }
         }); 
+}
+
+function runInquirerAddInv(){
+    inquirer
+        .prompt([{
+            name: "id",
+            type: "input",
+            message: ["What is the ID of product?"]       
+        },
+        {
+            name: "quantity",
+            type: "input",
+            message: ["How many units to add to inventory?"] 
+        }])
+        .then(function(answer){
+            var stockId = parseInt(answer.id);
+            var quantityNumber = parseInt(answer.quantity);
+                if (stockId < 1 || stockId > 10){
+                    invalidId();
+                    return runInquirerAddInv();
+                };
+                if (quantityNumber < 1){
+                    invalidQty();
+                    return runInquirerAddInv();
+                };
+            addToInventory(stockId, quantityNumber);
+        }); 
+}
+
+function runInquirerAddProd(){
+    inquirer
+        .prompt([
+        {
+            name: "product",
+            type: "input",
+            message: ["What is the product name?"] 
+        },
+        {    
+            name: "department",
+            type: "input",
+            message: ["What is the department name?"]
+        },
+                {    
+            name: "price",
+            type: "input",
+            message: ["What is the price?"]
+        },
+                {    
+            name: "qty",
+            type: "input",
+            message: ["What is the stock quantity?"]
+        }])
+        .then(function(answer){
+            var itemId = 5;
+            quantityNumber = parseInt(answer.qty);
+            if (itemId < 1 || itemId > 10){
+                invalidId();
+                return runInquirerAddProd();
+            };
+            if (quantityNumber < 1){
+                invalidQty();
+                return runInquirerAddProd();
+            };
+            addInventory(answer.product, answer.department, answer.price, answer.qty);
+            runInquirerAgain();
+        }); 
+}
+
+function runInquirerAgain(){
+    inquirer
+        .prompt({
+            name: "yorn",
+            type: "list",
+            message: "Use the arrow keys to select Y to add more or N to cancel",
+            choices: ["Y", "N"]       
+        })
+        .then(function(yorn){ 
+            if (yorn.yorn === 'Y'){
+                runInquirerAddProd();
+            }
+            else if (yorn.yorn === 'N'){
+                goodBye();
+                connection.end();
+            }
+        });  
+}
+
+function addInventory(product, department, price, qty){
+    var query = connection.query(
+        'insert into products set ?',
+        {
+            product_name: product,
+            department_name: department,
+            price: price,
+            stock_qty: qty
+        },
+        function(err, res){   
+        }
+    )
+}
+
+function addToInventory(id, qty){
+    var query = connection.query(
+        `UPDATE products SET stock_qty = stock_qty + ${qty} WHERE item_id = ${id}`,
+        function(err, res){   
+            displayProduct();
+        }
+    )
 }
 
 function displayProduct(){
@@ -78,120 +190,20 @@ function displayLowInv(){
     )
 }
 
-function runInquirerAddInv(){
-    inquirer
-        .prompt([{
-            name: "id",
-            type: "input",
-            message: [""]       
-        },
-        {
-            name: "quantity",
-            type: "input",
-            message: ["How many units to add to inventory?"] 
-        }])
-        .then(function(answer){
-            stockId = parseInt(answer.id);
-            quantityNumber = parseInt(answer.quantity);
-            if (stockId < 1 || stockId > 10){
-                console.log("=====================================");
-                console.log("You entered an invalid ID!  Try again");
-                console.log("=====================================");
-                return runInquirerAgain();
-            };
-            if (quantityNumber < 1){
-                console.log("=====================================");
-                console.log("You entered an invalid quantity!  Try again");
-                console.log("====================================="); 
-                return runInquirerAddInv();
-            };
-            addToInventory(stockId, quantityNumber);
-        }); 
+function invalidQty(){
+    console.log("=====================================");
+    console.log("You entered an invalid quantity!  Try again");
+    console.log("====================================="); 
 }
 
-function addToInventory(id, qty){
-    var query = connection.query(
-        `UPDATE products SET stock_qty = stock_qty + ${qty} WHERE item_id = ${id}`,
-        function(err, res){   
-            displayProduct();
-        }
-    )
+function invalidId(){
+    console.log("=====================================");
+    console.log("You entered an invalid ID!  Try again");
+    console.log("=====================================");
 }
 
-function runInquirerAddProd(){
-    inquirer
-        .prompt([
-        {
-            name: "product",
-            type: "input",
-            message: ["What is the product name?"] 
-        },
-        {    
-            name: "department",
-            type: "input",
-            message: ["What is the department name?"]
-        },
-                {    
-            name: "price",
-            type: "input",
-            message: ["What is the price?"]
-        },
-                {    
-            name: "qty",
-            type: "input",
-            message: ["What is the stock quantity?"]
-        }])
-        .then(function(answer){
-            itemId = parseInt(answer.item);
-            quantityNumber = parseInt(answer.qty);
-            if (itemId < 1 || itemId > 10){
-                console.log("=====================================");
-                console.log("You entered an invalid ID!  Try again");
-                console.log("=====================================");
-                return runInquirerAddProd();
-            };
-            if (quantityNumber < 1){
-                console.log("=====================================");
-                console.log("You entered an invalid quantity!  Try again");
-                console.log("====================================="); 
-                return runInquirerAddProd();
-            };
-            addInventory(answer.product, answer.department, answer.price, answer.qty);
-            runInquirerAgain();
-        }); 
-}
-
-function addInventory(product, department, price, qty){
-    var query = connection.query(
-        'insert into products set ?',
-        {
-            product_name: product,
-            department_name: department,
-            price: price,
-            stock_qty: qty
-        },
-        function(err, res){   
-        }
-    )
-}
-
-function runInquirerAgain(){
-    inquirer
-        .prompt({
-            name: "yorn",
-            type: "list",
-            message: "Use the arrow keys to select Y to add more or N to cancel",
-            choices: ["Y", "N"]       
-        })
-        .then(function(yorn){ 
-            if (yorn.yorn === 'Y'){
-                runInquirerAddProd();
-            }
-            else if (yorn.yorn === 'N'){
-                console.log("=====================================");
-                console.log("goodbye!");
-                console.log("=====================================");
-                connection.end();
-            }
-        });  
+function goodBye(){
+    console.log("=====================================");
+    console.log("goodbye!");
+    console.log("=====================================");
 }
