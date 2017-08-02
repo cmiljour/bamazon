@@ -1,5 +1,10 @@
 ﻿# bamazon
 
+
+
+
+
+
 [cynics@cynics-pc bamazon]$ systemctl start mariadb.service
 [cynics@cynics-pc bamazon]$ node bamazon
 
