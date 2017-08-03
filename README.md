@@ -12,6 +12,7 @@ Prerequisites:
 
 Get Started:
 
-Open up a terminal and type 'node bamazon.js' without the quotes.  This brings you to the main menu as displayed below.
+Open up a terminal and type 'node bamazon.js' without the quotes.  This brings you to the main menu where you can choose an ID
+and quantity.  See the below image for sample output.
 
-![Image of Mainmenu](https://github.com/cmiljour/markdown/bamazonmainmenu.png)
+![Image of Mainmenu](https://github.com/cmiljour/bamazon/blob/master/markdown/bamazonmainmenu.png)
