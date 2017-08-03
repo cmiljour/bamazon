@@ -165,7 +165,7 @@ function displayProduct(){
             console.log('');
             console.log(`----------------------------------------------------------------`)
             res.forEach(function(element) {
-                console.log(`Item ID:${element.item_id}, NAME:${element.product_name}, PRICE:${element.price}, Qty:${element.stock_qty}`);
+                console.log(`Item ID:${element.item_id}, NAME:${element.product_name}, PRICE:$${element.price}, Qty:${element.stock_qty}`);
                 console.log(`----------------------------------------------------------------`)
             }, this);
             console.log('');    
@@ -181,7 +181,7 @@ function displayLowInv(){
             console.log('');
             console.log(`----------------------------------------------------------------`)
             res.forEach(function(element) {
-                console.log(`Item ID:${element.item_id}, NAME:${element.product_name}, PRICE:${element.price}, Qty:${element.stock_qty}`);
+                console.log(`Item ID:${element.item_id}, NAME:${element.product_name}, PRICE:$${element.price}, Qty:${element.stock_qty}`);
                 console.log(`----------------------------------------------------------------`)
             }, this);
             console.log('');    

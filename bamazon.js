@@ -106,8 +106,8 @@ function displayProduct(){
         function(err, res){
             console.log('');
             res.forEach(function(element) {
-                console.log(`Item ID:${element.item_id}, NAME:${element.product_name}, PRICE:${element.price}`);
-                console.log(`------------------------------`)
+                console.log(`Item ID:${element.item_id}, NAME:${element.product_name}, PRICE:$${element.price}`);
+                console.log(`--------------------------------------------------------`)
             }, this);
             console.log('');    
             runInquirer();
