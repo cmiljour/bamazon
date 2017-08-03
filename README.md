@@ -1,5 +1,3 @@
-# bamazon
-
 Welcome to BAMAZON!
 
 This is an application which utilizes a simple MySQL database to display data on the command line through javascript and NodeJs.
