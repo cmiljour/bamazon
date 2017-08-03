@@ -28,3 +28,5 @@ can list products for sale, view low inventory, add to inventory, and add new pr
 *pressing CTRL-C on the keyboard will exit the program.  If you don't like pressing that, there is usually a menu exit selection.
 
 *if you type an out of bound ID or inventory level (-34234 quantity), it will spit an error and reset the menus
+
+**Northwestern Coding Bootcamp Staff - screenshots are stored at https://github.com/cmiljour/bamazon/tree/master/markdown **
